@@ -13,7 +13,11 @@
                 </div>
                 <div id = "div-select">
                     <select >
-                        <option selected disabled value="">Seleciona o destino do frete</option> 
+                        <option selected disabled value="">Seleciona o destino do frete</option>
+                        <option 
+                        v-for = "(city, index) in  cities" 
+                        :key="index"
+                        >{{city}}</option> 
                     </select>
                 </div>
             </div>
