@@ -71,7 +71,77 @@ export default {
   },
   methods: {
     // Implemente aqui os metodos utilizados na pagina
-   
+    async fetchTransport() {
+      const result = await fetch('http://localhost:3000/transport')
+      this.transports = await result.json() 
+      this.setCities(this.transports)
+    },
+
+    setCities(transports){
+      const allCities = transports.map(function(element) {
+        return element.city;
+      });
+      this.cities = [...new Set(allCities)] 
+    },
+
+    numbersOnly(evt) {
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
+
+    getTransportByCity(city){
+      return this.transports.filter(transport => {
+        return transport.city === city
+      })
+    },
+
+    setCheaperShipping(items){
+      const id = items[0].id
+      this.cheaperShipping =  this.transports[id]
+    },
+
+    setFasterShipping(items){
+      const id = items[0].id
+      this.fasterShipping = this.transports[id]
+    },
+
+    getManipulateData(city){
+      const destiny = JSON.parse(JSON.stringify(this.getTransportByCity(city))) 
+      console.log('desteny', destiny);
+      return destiny.map(function(item) {  
+            item.lead_time = (item.cost_transport_heavy.split('h'))[0]; 
+            item.cost_transport_heavy = (item.cost_transport_heavy.split(' '))[1]
+            item.cost_transport_light = (item.cost_transport_light.split(' '))[1]
+            return item; 
+        })
+    },
+
+    analyze(){
+       this.cheaperShipping = {}
+       
+       this.fasterShipping = {}
+       const newItems = this.getManipulateData(this.city)
+
+       let sortedItemsByCost = []
+       let sortedItemsByTime = []
+
+       if (this.weight > 100){
+        sortedItemsByCost = newItems.sort((a, b) => a.cost_transport_light - b.cost_transport_light)
+       }else{
+        sortedItemsByCost = newItems.sort((a, b) => a.cost_transport_heavy - b.cost_transport_heavy)
+       }
+       
+       sortedItemsByTime = newItems.sort((a, b) => a.lead_time - b.lead_time)
+      
+        this.setFasterShipping(sortedItemsByTime )
+        this.setCheaperShipping(sortedItemsByCost )
+       //console.log(sortedItemsByCost);
+    }
   }
 }
 </script>
