@@ -1,53 +1,47 @@
 <template>
   <div class="main-section">
     <div class="container">
-        <div>
-            <h3>Como é o frete que você precisa?</h3>
+        <div class="header-container">
+            <span>Como é o frete que você precisa?</span>
         </div>
-        <div>
-            <div>
+        <div class = "form">
+            <div class="destiny">
                 <div>
                     <label>
                         Destino
                     </label>
                 </div>
-                <div>
+                <div id = "div-select">
                     <select >
-                        <option selected disabled value="">Select language</option> 
+                        <option selected disabled value="">Seleciona o destino do frete</option> 
                     </select>
                 </div>
             </div>
-            <div>
+            <div class="weight">
                 <div>
                     <label>
                         Peso
                     </label>
                 </div>
-                <div>
+                <div id="div-input">
                     <input 
                         type="text" 
                         label="insira aqui o peso da carga em kg"
                     />
                 </div>
             </div>
-            <div>
+            <div class="container-submit">
                  <button type="button" >Analisar</button>
             </div>
         </div>
-        <div>
-            <h3>Essas são as melhores alternativas de frete que encontramos para  você</h3>
+        <div class="result-tiltle">
+            <span>Essas são as melhores alternativas de frete que encontramos para  você</span>
         </div>
-        <div>
-            <p>
-            Frete mais Barato
-            <span> Transportadora XYZ LTDA - R$ 500,00 - 12h</span>
-            </p>
+        <div id="cheaperShipping">
+            <span>Frete mais barato: <b>Transportadora XYZ LTDA - R$ 500,00 - 12h</b></span>
         </div>
-        <div>
-            <p>
-            Frete mais Barato
-            <span> Transportadora XYZ LTDA - R$ 500,00 - 12h</span>
-            </p>
+        <div id="fasterShipping">
+            <span>Frete mais rapido: <b>Transportadora XYZ LTDA - R$ 500,00 - 12h</b></span>  
         </div>
     </div>
   </div>
@@ -93,4 +87,116 @@ export default {
     max-width: 700px;
     padding:40px;
 }
+
+.main-section .container .header-container{
+     border-bottom: 1px solid #000;
+     max-width:400px;
+     padding-left:10px;
+     padding-right:10px;
+     padding-bottom:5px;
+}
+.main-section .container .header-container span{
+     font-size:1.25em;
+     font-weight:bold;
+}
+
+.main-section .container .form{
+    padding:30px;
+}
+.main-section .container .form .destiny{
+    margin-bottom:30px;
+}
+
+.main-section .container .form .destiny > div:nth-of-type(1){
+    margin-bottom:5px;
+    font-size: 1.1em;
+}
+
+ #div-select{
+     max-width:450px;
+    
+}
+
+ #div-select select{
+     width:100%;
+     height:30px;
+     background-color: #C9DAF8; 
+     border: 1px solid;
+    
+}
+
+.main-section .container .form .weight{
+    margin-bottom:30px;
+}
+
+.main-section .container .form .weight > div:nth-of-type(1){
+    margin-bottom:5px;
+    font-size: 1.1em;
+}
+
+#div-input{
+    max-width:450px;
+}
+
+#div-input input{
+     width:100%;
+     height:30px; 
+     background-color: #C9DAF8;  
+     border: 1px solid;
+}
+
+.container-submit{
+    max-width: 450px;   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-submit button{
+   width: 120px;
+   padding: 5px;
+   border: solid 1px #D9EAD3;
+   border-radius: 5px;
+   background-color: #D9EAD3
+   
+}
+
+
+
+.main-section .container .result-tiltle{
+     border-bottom: 1px solid #000;
+    max-width:400px;
+     padding-left:10px;
+     padding-right:10px;
+     padding-bottom:5px;
+}
+
+.main-section .container .result-tiltle span{
+     font-size:1.25em;
+     font-weight:bold;
+     line-height:1em
+}
+
+#cheaperShipping{
+    
+    display: flex;
+    margin-top:30px;
+    border: dashed 1px #00ACA6;
+    padding:10px;
+    border-radius: 5px;
+    background-color: #D9EAD3;
+}
+
+
+
+#fasterShipping{
+    
+    display: flex;
+    margin-top:30px;
+    border: dashed 1px #798395;
+    padding:10px;
+    border-radius: 5px;
+    background-color: #C9DAF8;
+}
+
 </style>
