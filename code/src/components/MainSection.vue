@@ -12,7 +12,7 @@
                     </label>
                 </div>
                 <div id = "div-select">
-                    <select >
+                    <select v-model="city">
                         <option selected disabled value="">Seleciona o destino do frete</option>
                         <option 
                         v-for = "(city, index) in  cities" 
@@ -30,22 +30,25 @@
                 <div id="div-input">
                     <input 
                         type="text" 
-                        label="insira aqui o peso da carga em kg"
+                        v-model="weight" 
+                        v-on:keypress="numbersOnly"
+                        placeholder="insira aqui o peso da carga em kg"
                     />
+
                 </div>
             </div>
             <div class="container-submit">
-                 <button type="button" >Analisar</button>
+                 <button type="button" v-on:click=" analyze()" >Analisar</button>
             </div>
         </div>
-        <div class="result-tiltle">
+        <div class="result-tiltle" >
             <span>Essas são as melhores alternativas de frete que encontramos para  você</span>
         </div>
-        <div id="cheaperShipping">
-            <span>Frete mais barato: <b>Transportadora XYZ LTDA - R$ 500,00 - 12h</b></span>
+        <div id="cheaperShipping" v-if="showResult">
+            <span>Frete mais barato: <b>{{cheaperShipping.name}} - {{weight > 100 ? cheaperShipping.cost_transport_heavy  : cheaperShipping.cost_transport_light  }} - {{cheaperShipping.lead_time}}</b></span>
         </div>
-        <div id="fasterShipping">
-            <span>Frete mais rapido: <b>Transportadora XYZ LTDA - R$ 500,00 - 12h</b></span>  
+        <div id="fasterShipping" v-if="showResult">
+            <span>Frete mais rapido: <b>{{fasterShipping.name}} - {{weight > 100 ? fasterShipping.cost_transport_heavy : fasterShipping.cost_transport_light}} - {{fasterShipping.lead_time}}</b></span>  
         </div>
     </div>
   </div>
@@ -65,7 +68,8 @@ export default {
       weight:null,
       city:'',
       cheaperShipping: {},
-      fasterShipping: {}
+      fasterShipping: {},
+      showResult:false,
     }
   },
   created() {
@@ -116,9 +120,8 @@ export default {
 
     getManipulateData(city){
       const destiny = JSON.parse(JSON.stringify(this.getTransportByCity(city))) 
-      console.log('desteny', destiny);
       return destiny.map(function(item) {  
-            item.lead_time = (item.cost_transport_heavy.split('h'))[0]; 
+            item.lead_time = (item.lead_time.split('h'))[0]; 
             item.cost_transport_heavy = (item.cost_transport_heavy.split(' '))[1]
             item.cost_transport_light = (item.cost_transport_light.split(' '))[1]
             return item; 
@@ -126,11 +129,22 @@ export default {
     },
 
     analyze(){
+       
+
+       if(!this.city || !this.weight){
+        
+        alert(" você precisa preencher os campos")
+        this.showResult = false;
+        return;
+       
+       }
+
+       this.showResult = true;
        this.cheaperShipping = {}
        
        this.fasterShipping = {}
        const newItems = this.getManipulateData(this.city)
-
+    
        let sortedItemsByCost = []
        let sortedItemsByTime = []
 
@@ -144,7 +158,7 @@ export default {
       
         this.setFasterShipping(sortedItemsByTime )
         this.setCheaperShipping(sortedItemsByCost )
-       //console.log(sortedItemsByCost);
+
     }
   }
 }
@@ -215,7 +229,8 @@ export default {
 #div-input input{
      width:100%;
      height:30px; 
-     background-color: #C9DAF8;  
+     background-color: #C9DAF8;
+     padding:5px;  
      border: 1px solid;
 }
 
