@@ -62,7 +62,12 @@ export default {
 
     return {
       appName,
-
+      transports:[],
+      cities:[],
+      weight:null,
+      city:'',
+      cheaperShipping: {},
+      fasterShipping: {}
     }
   },
   created() {
